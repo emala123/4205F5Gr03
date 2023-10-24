@@ -16,6 +16,7 @@ import LoginEmployeur from "./user/pages/LoginEmployeur";
 import InscrireEtudiant from "./user/pages/InscrireEtudiant";
 import InscrireEmployeur from "./user/pages/InscrireEmployeur";
 import AjouterStage from "./Stage/AjouterStages";
+import ModifierStage from './Stage/ModifierStageEmployeur';
 import StagesUser from "./Stage/StagesUser";
 import Stages from "./Stage/Stages";
 import ModifierEtudiant from "./Etudiant/ModifierEtudiant";
@@ -78,6 +79,10 @@ const App = () => {
 
         <Route path="/:userId/mesStages">
         <StagesUser />
+        </Route>
+
+        <Route path = "/modifierStage/:userId/:stageId">
+          <ModifierStage />
         </Route>
 
         <Redirect to="/modifierProfilEmployeur" />

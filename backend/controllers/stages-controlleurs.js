@@ -116,7 +116,37 @@ const ajouterStage = async (requete, reponse, next) => {
   }
 
   reponse.status(201).json({ stage: nouveauStage });
+
+
+  
 };
+
+const updateStage = async (requete, reponse, next) => {
+  const { nom, courriel, telephone, adresse, description, remuneration } = requete.body;
+  const { stageId } = requete.params;
+
+  try {
+    let stage = await Stage.findById(stageId);
+
+    if (!stage) {
+      return next(new HttpErreur("Stage non trouvé", 404));
+    }
+
+    stage.nom = nom;
+    stage.courriel = courriel;
+    stage.telephone = telephone;
+    stage.adresse = adresse;
+    stage.description = description;
+    stage.remuneration = remuneration;
+
+    await stage.save();
+    
+    reponse.status(200).json({ stage: stage.toObject({ getters: true }) });
+  } catch (err) {
+    return next(new HttpErreur("Erreur lors de la mise à jour d'un stage", 500));
+  }
+};
+
 
 
 
@@ -124,3 +154,4 @@ exports.getToutLesStages = getToutLesStages;
 exports.getStagesEmployeur = getStagesEmployeur;
 exports.ajouterEmployeurStage = ajouterEmployeurStage;
 exports.ajouterStage = ajouterStage;
+exports.updateStage = updateStage;

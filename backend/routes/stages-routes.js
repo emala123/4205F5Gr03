@@ -11,4 +11,7 @@ router.post("/ajouterStage/:employeurId", controleursStages.ajouterEmployeurStag
 
 router.post("/ajouterUnStage", controleursStages.ajouterStage)
 
+router.patch("/modifierStage/:employeurId/:stageId", controleursStages.updateStage);
+
+
 module.exports = router;
