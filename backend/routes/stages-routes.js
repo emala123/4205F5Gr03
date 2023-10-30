@@ -13,5 +13,7 @@ router.post("/ajouterUnStage", controleursStages.ajouterStage)
 
 router.patch("/modifierStage/:employeurId/:stageId", controleursStages.updateStage);
 
+router.delete("/supprimerStage/:employeurId/:stageId", controleursStages.supprimerStage);
+
 
 module.exports = router;

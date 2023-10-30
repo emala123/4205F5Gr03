@@ -3,6 +3,9 @@ const HttpErreur = require("../models/http-erreur");
 
 const Stage = require("../models/stage");
 const Employeur = require("../models/employeur");
+const Etudiant = require("../models/etudiant");
+const employeur = require("../models/employeur");
+const stage = require("../models/stage");
 
 const getToutLesStages = async (requete, reponse, next) => {
     let stages;
@@ -147,11 +150,60 @@ const updateStage = async (requete, reponse, next) => {
   }
 };
 
+const supprimerStage = async (requete, reponse, next) => {
 
+  const stageId = requete.params.stageId;
 
+  const employeurId = requete.params.employeurId;
+
+  let stage;
+  let employeur; 
+
+  try {
+    stage = await Stage.findByIdAndRemove(stageId);
+
+  }catch(err){
+    return next(new HttpErreur("Stage non trouvé", 500));
+  }
+
+  try {
+    employeur = await Employeur.findById(employeurId);
+
+  }catch(err){
+    return next(new HttpErreur("L'employeur du stage est non trouvé", 500));
+  }
+
+  let etudiants = [];
+
+  try{
+    for(let i = 0; i < stage.etudiants.length; i++) {
+      
+        etudiants.push(stage.etudiants[i]);
+    }
+
+    for(let i = 0; i < etudiants.length; i++){
+      let etudiant;
+      try{
+          etudiant = await Etudiant.findById(etudiants[i]);
+      }catch(err){
+        return next(new HttpErreur("L'etudiant du stage est non trouvé", 500));
+      }
+
+      etudiant.stages.pull(stageId)
+      etudiant.save();
+    }
+    employeur.stages.pull(stageId);
+    employeur.save();
+
+  }catch{
+    return next(new HttpErreur ("Erreur lors de la suppression d'un stage!", 500));
+  }
+  reponse.status(200).json({message: "Stage supprimé avec success!"});
+};
 
 exports.getToutLesStages = getToutLesStages;
 exports.getStagesEmployeur = getStagesEmployeur;
 exports.ajouterEmployeurStage = ajouterEmployeurStage;
 exports.ajouterStage = ajouterStage;
 exports.updateStage = updateStage;
+exports.supprimerStage= supprimerStage;

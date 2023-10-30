@@ -5,19 +5,19 @@ import { useHttpClient } from '../shared/hooks/http-hook';
 import { AuthContext } from '../shared/context/auth-context';
 import Button from "react-bootstrap/esm/Button";
 import { Link } from "react-router-dom"; // Import the Link component
-
+ 
 const StagesListeUser = () => {
     const [StagesLoad, setStagesLoad] = useState([]); // Initialize as an empty array
     const auth = useContext(AuthContext);
     const { error, sendRequest, clearError } = useHttpClient();
-
+ 
     useEffect(() => {
         if (error) {
             alert(error);
             clearError();
         }
     }, [error, clearError]);
-
+ 
     useEffect(() => {
         const stages = async () => {
             try {    
@@ -31,22 +31,14 @@ const StagesListeUser = () => {
         };
         stages();
     }, [sendRequest, auth.userId]);
-
+ 
     return (
         <React.Fragment>
             <h1>Bienvenue dans votre liste de stages que vous avez créé!</h1>
-            <ul>
-                {StagesLoad.map((stage) => (
-                    <li key={stage.id}>
-                        {stage.title}
-                        <Link to={`/modifierStage/${auth.userId}/${stage.id}`}>Modifier ce stage</Link>
-
-                    </li>
-                ))}
-            </ul>
+            
             {StagesLoad && <ListeStagesUser items={StagesLoad} />}
         </React.Fragment>
     );
 };
-
+ 
 export default StagesListeUser;

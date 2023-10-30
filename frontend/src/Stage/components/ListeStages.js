@@ -52,7 +52,6 @@ const ListeStages = (props) => {
             {props.items.length === 0 ? (
                 <div>
                     <h2>Aucun stage trouvé</h2>
-                    <Link to="/ajouterStage">Ajouter un stage</Link>
                 </div>
             ) : (
                 <ul className='listeStage'>
