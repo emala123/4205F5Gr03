@@ -200,6 +200,7 @@ const supprimerStage = async (requete, reponse, next) => {
   }
   reponse.status(200).json({message: "Stage supprimé avec success!"});
 };
+<<<<<<< HEAD
 
 const recupererStage = async (requete, reponse, next) =>{
   const stageId = requete.params.stageId;
@@ -218,11 +219,17 @@ const recupererStage = async (requete, reponse, next) =>{
  
   reponse.json({ stage: stage.toObject({ getters: true }) });
 }
+=======
+>>>>>>> 5553f963b8ecd0f61c165e500b03e38039d61a5a
 
 exports.getToutLesStages = getToutLesStages;
 exports.getStagesEmployeur = getStagesEmployeur;
 exports.ajouterEmployeurStage = ajouterEmployeurStage;
 exports.ajouterStage = ajouterStage;
 exports.updateStage = updateStage;
+<<<<<<< HEAD
 exports.supprimerStage= supprimerStage;
 exports.recupererStage = recupererStage;
+=======
+exports.supprimerStage= supprimerStage;
+>>>>>>> 5553f963b8ecd0f61c165e500b03e38039d61a5a

@@ -11,10 +11,6 @@ router.post("/ajouterStage/:employeurId", controleursStages.ajouterEmployeurStag
 
 router.post("/ajouterUnStage", controleursStages.ajouterStage)
 
-router.patch("/modifierStage/:employeurId/:stageId", controleursStages.updateStage);
 
-router.delete("/supprimerStage/:employeurId/:stageId", controleursStages.supprimerStage);
-
-router.get("/recupererStage/:stageId", controleursStages.recupererStage);
 
 module.exports = router;
