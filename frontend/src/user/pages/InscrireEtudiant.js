@@ -21,60 +21,61 @@ const InscrireEtudiant = () => {
         }
       }, [error, clearError]);
 
-  const ajouterEtudiant = async (event) => {
-    event.preventDefault();
+      const ajouterEtudiant = async (event) => {
+        event.preventDefault();
+      
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        var number = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+        const adress = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s,'-]+$/;
 
-    try {
-      const reponseData = await sendRequest(
-        `http://localhost:5000/`+"etudiants/inscription",
-        "POST",
-        JSON.stringify({
-          prenom: saisiePrenomEtudiant,
-          nom: saisieNomEtudiant,
-          courriel: saisieCourrielEtudiant,
-          adresse: saisieAdresse,
-          motDePasse: saisieMotDePasse,
-          telephone: saisieTelephone,
-
-        }),
-        {
-          "Content-Type": "application/json",
+        if (saisiePrenomEtudiant === "") {
+          alert("Veuillez entrer le prénom de l'étudiant que vous voulez ajouter");
+          return;
+        } else if (saisieNomEtudiant === "") {
+          alert("Veuillez entrer le nom de l'étudiant que vous voulez ajouter");
+          return;
+        } else if (!saisieCourrielEtudiant.match(validRegex)) {
+          alert("Veuillez compléter le courriel de l'étudiant que vous voulez ajouter");
+          return;
+        } else if (saisieMotDePasse === "") {
+          alert("Veuillez entrer votre mot de passe d'étudiant");
+          return;
+        } else if (!saisieAdresse.match(adress)) {
+          alert("Veuillez une adresse de l'étudiant ");
+          return;
+        } else if (!saisieTelephone.match(number)) {
+          alert("Veuillez entrer un numéro de téléphone valide ");
+          return;
         }
-      );
-      console.log(reponseData);
-      alert("Un étudiant a bien été créer, maintenant connectez-vous");
-      setSaisiePrenomEtudiant("");
-      setSaisieNomEtudiant("");
-      setSaisieCourrielEtudiant("");
-      setSaisieMotDePasse("")
-      setSaisieAdresse("");
-      setSaisieTelephone("");
-    } catch (err) {
-      console.log(err);
-    }
-
-    if (saisiePrenomEtudiant === "") {
-      alert(
-        "Veuillez entrer le nom de l'étudiant que vous voulez ajouter"
-      );
-      return;
-    } else if (saisieNomEtudiant === "") {
-      alert("Veuillez entrer le nom de l'étudiant que vous voulez ajouter");
-      return;
-    } else if (saisieCourrielEtudiant === "") {
-      alert("Veuillez entrer le courriel de l'étudinat que vous voulez ajouter");
-      return;
-    }  else if (saisieMotDePasse === "") {
-      alert("Veuillez entrer votre mot de passe d'étudiant");
-      return;
-    } else if (saisieAdresse === "") {
-      alert("Veuillez entrer l'adresse de l'étudiant ");
-      return;
-    } else if (saisieTelephone === "") {
-      alert("Veuillez entrer un numero de telephone ");
-      return;
-    }
-  };
+      
+        try {
+          const reponseData = await sendRequest(
+            `http://localhost:5000/` + "etudiants/inscription",
+            "POST",
+            JSON.stringify({
+              prenom: saisiePrenomEtudiant,
+              nom: saisieNomEtudiant,
+              courriel: saisieCourrielEtudiant,
+              adresse: saisieAdresse,
+              motDePasse: saisieMotDePasse,
+              telephone: saisieTelephone,
+            }),
+            {
+              "Content-Type": "application/json",
+            }
+          );
+          console.log(reponseData);
+          alert("Un étudiant a bien été créé, maintenant connectez-vous");
+          setSaisiePrenomEtudiant("");
+          setSaisieNomEtudiant("");
+          setSaisieCourrielEtudiant("");
+          setSaisieMotDePasse("");
+          setSaisieAdresse("");
+          setSaisieTelephone("");
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
   function saisiePrenomEtudiantHandler(event) {
     setSaisiePrenomEtudiant(event.target.value);
