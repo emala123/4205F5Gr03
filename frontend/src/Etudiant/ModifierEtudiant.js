@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { useHttpClient } from "../shared/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 
@@ -39,10 +38,6 @@ const ModifierEtudiant = () => {
                 );
                 console.log(reponseData.etudiant);
                 alert("Votre profil à bien été modifié!");
-                setSaisiePrenomEtudiant("");
-                setSaisieNomEtudiant("");
-                setSaisieAdresse("");
-                setSaisieTelephone("");
             }catch (erreur) {
                 console.log(erreur);
             }
@@ -63,6 +58,23 @@ const ModifierEtudiant = () => {
                 return;
               }
         };
+
+        useEffect(() => {
+            const recupererEtudiant = async () => {
+              try {
+                const reponseData = await sendRequest(
+                  `http://localhost:5000/` + `etudiants/recupererEtudiant/${etudiantId}`
+                );
+                setSaisiePrenomEtudiant(reponseData.etudiant.prenom);
+                setSaisieNomEtudiant(reponseData.etudiant.nom);
+                setSaisieAdresse(reponseData.etudiant.adresse);
+                setSaisieTelephone(reponseData.etudiant.telephone);
+              } catch (erreur) {
+                console.log(erreur);
+              }
+            };
+            recupererEtudiant();
+          }, [sendRequest, etudiantId]);
 
         function saisiePrenomEtudiantHandler(event) {
             setSaisiePrenomEtudiant(event.target.value);

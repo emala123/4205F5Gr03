@@ -23,6 +23,13 @@ const NavLinks = props => {
         <li>
           <NavLink to={"/stages"}>Stages</NavLink>
         </li>
+          )}
+          {auth.etudiantConnecter && (
+            <li>
+              <NavLink to={"/StagePostuler"}>Stage Postuler</NavLink>
+            </li>
+        
+        
       )}
       {auth.employeurConnecter && (
         <li>

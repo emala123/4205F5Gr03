@@ -39,7 +39,7 @@ const AffichageCandidats = () => {
             const reponseData = await sendRequest(
               `http://localhost:5000/etudiants/recupererEtudiant/${etudiantId}`
             );
-            return reponseData.etudiant; // Les détails de l'étudiant
+            return reponseData.etudiant;
           } catch (erreur) {
             console.log(erreur);
             return null;

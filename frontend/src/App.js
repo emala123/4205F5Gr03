@@ -20,6 +20,8 @@ import ModifierStage from './Stage/ModifierStageEmployeur';
 import StagesUser from "./Stage/StagesUser";
 import Stages from "./Stage/Stages";
 import ModifierEtudiant from "./Etudiant/ModifierEtudiant";
+import AffichageStagePostule from "./Etudiant/AffichageStagePostule";
+
 import ModifierEmployeur from './Employeur/ModifierEmployeur';
 import AffichageCandidats from './Employeur/AffichageCandidats';
 import MainNavigation from './shared/Navigation/MainNavigation';
@@ -61,6 +63,10 @@ const App = () => {
 
         <Route path="/stages" exact>
           <Stages />
+        </Route>
+
+        <Route path="/StagePostuler" exact>
+          <AffichageStagePostule />
         </Route>
 
         <Redirect to="/modifierProfilEtudiant" />

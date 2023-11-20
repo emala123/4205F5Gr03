@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { useHttpClient } from "../shared/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 
@@ -43,12 +42,6 @@ const ModifierEmployeur = () => {
                 );
                 console.log(reponseData.etudiant);
                 alert("Votre profil à bien été modifié!");
-                setSaisieNomEntreprise("");
-                setSaisieAdresse("");
-                setSaisiePrenom("");
-                setSaisieNom("")
-                setSaisieTelephone("");
-                setSaisiePostTelephone("");
             }catch (erreur) {
                 console.log(erreur);
             }
@@ -75,7 +68,27 @@ const ModifierEmployeur = () => {
                 alert("Veuillez entrer le poste du telephone ");
                 return;
               }
+              
         };
+
+        useEffect(() => {
+          const recupererEmployeur = async () => {
+              try {
+                  const reponseData = await sendRequest(
+                      `http://localhost:5000/` + `employeurs/recupererEmployeur/${employeurId}`
+                  );
+                  setSaisieNomEntreprise(reponseData.employeur.nomEtreprise);
+                  setSaisieAdresse(reponseData.employeur.adresse);
+                  setSaisiePrenom(reponseData.employeur.prenom);
+                  setSaisieTelephone(reponseData.employeur.telephone);
+                  setSaisieNom(reponseData.employeur.nom);
+                  setSaisiePostTelephone(reponseData.employeur.posteTelephone);
+              } catch (erreur) {
+                  console.log(erreur);
+              }
+          };
+          recupererEmployeur();
+      }, [sendRequest, employeurId]);
 
         function saisieNomEntrepriseHandler(event) {
             setSaisieNomEntreprise(event.target.value);
@@ -153,7 +166,7 @@ const ModifierEmployeur = () => {
                         placeholder="Poste du telephone de l'employeur"
                     />
                     <br></br>
-                    <button type="sumbit">Modifier votre profil</button>
+                      <button type="sumbit">Modifier votre profil</button>
                 </form>
             </div>
         );

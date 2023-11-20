@@ -90,6 +90,25 @@ const updateEmployeur = async (requete, reponse, next) => {
       reponse.status(200).json({ employeur: employeur.toObject({ getters: true }) });
 }
 
+const recupererEmployeur = async (requete, reponse, next) => {
+  const employeurId = requete.params.employeurId;
+ 
+  let employeur;
+ 
+  try{
+    employeur = await Employeur.findById(employeurId);
+  }catch (err){
+      return next(new HttpErreur("Erreur lors de la récupération d'un employeur", 500));
+  }
+ 
+  if (!employeur) {
+    return next(new HttpErreur("Aucun employeur trouvé pour l'id fourni", 404));
+  }
+ 
+  reponse.json({ employeur: employeur.toObject({ getters: true }) });
+}
+
 exports.inscription = inscription;
 exports.connexion = connexion;
 exports.updateEmployeur = updateEmployeur;
+exports.recupererEmployeur = recupererEmployeur;
