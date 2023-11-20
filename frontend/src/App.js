@@ -86,13 +86,10 @@ const App = () => {
           <ModifierStage />
         </Route>
 
-<<<<<<< HEAD
         <Route path = "/affichageCandidats/:stageId">
           <AffichageCandidats />
         </Route>
 
-=======
->>>>>>> 5553f963b8ecd0f61c165e500b03e38039d61a5a
         <Redirect to="/modifierProfilEmployeur" />
       </Switch>
     );

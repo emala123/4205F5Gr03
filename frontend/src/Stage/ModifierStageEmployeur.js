@@ -2,10 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useHttpClient } from "../shared/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
-<<<<<<< HEAD
 import "./ModifierStageEmployeur.css"
-=======
->>>>>>> 5553f963b8ecd0f61c165e500b03e38039d61a5a
 
 const ModifierStage = () => {
     const auth = useContext(AuthContext);

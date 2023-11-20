@@ -1,0 +1,7 @@
+{
+    "env": {
+        "DB_USER": "projet",
+        "DB_PASSWORD": "iuNHgke6ubJBzEpQ",
+        "DB_NAME":"bigprojet"
+    }
+}
