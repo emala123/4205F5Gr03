@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const Etudiant = require("../models/etudiant");
 const Stage = require("../models/stage");
 const { default: mongoose } = require("mongoose");
+const etudiant = require("../models/etudiant");
 
 const inscription = async (requete, reponse, next) => {
     
@@ -152,8 +153,33 @@ const recupererEtudiant = async (requete, reponse, next) => {
   reponse.json({ etudiant: etudiant.toObject({ getters: true }) });
 }
 
+const recupererStagePostulerId = async(requete, reponse, next) => {
+  const etudiantId = requete.params.etudiantId;
+
+  const stages = [];
+
+  let etudiant;
+
+  try{
+    etudiant = await Etudiant.findById(etudiantId);
+  }catch (err){
+      return next(new HttpErreur("Erreur lors de la récupération d'un étudiant", 500));
+  }
+
+  if (!etudiant) {
+    return next(new HttpErreur("Aucun étudiant trouvée pour l'id fourni", 404));
+  }
+
+  for(let i = 0; i < etudiant.postulations.length; i++) {
+      stages.push(etudiant.postulations[i].stage)
+  }
+
+  reponse.json({ stages: stages});
+}
+
 exports.inscription = inscription;
 exports.connexion = connexion;
 exports.updateEtudiant = updateEtudiant;
 exports.inscrireStage = inscrireStage;
 exports.recupererEtudiant = recupererEtudiant;
+exports.recupererStagePostulerId = recupererStagePostulerId;

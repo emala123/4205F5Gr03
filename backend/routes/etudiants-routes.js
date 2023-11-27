@@ -14,4 +14,6 @@ router.post("/inscrireStage/:stageId/:etudiantId", controleursEtudiants.inscrire
 
 router.get("/recupererEtudiant/:etudiantId", controleursEtudiants.recupererEtudiant);
 
+router.get("/recupererStagePostulerId/:etudiantId", controleursEtudiants.recupererStagePostulerId);
+
 module.exports = router;

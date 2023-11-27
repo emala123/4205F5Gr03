@@ -33,7 +33,7 @@ const Stages = () => {
     return(
         <React.Fragment>
             <h1>Voici tout les stages!</h1>
-            {stages && <ListeStages items={stages} />};
+            {stages && <ListeStages items={stages} />}
         </React.Fragment>
         
     );

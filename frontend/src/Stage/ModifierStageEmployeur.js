@@ -79,6 +79,25 @@ const ModifierStage = () => {
               }
         };
 
+        useEffect(() => {
+          const recupererStage = async () => {
+            try {
+              const reponseData = await sendRequest(
+                `http://localhost:5000/` + `stages/recupererStage/${stageId}`
+              );
+              setSaisieNomEntreprise(reponseData.stage.nom);
+              setSaisieCourriel(reponseData.stage.courriel);
+              setSaisieNum(reponseData.stage.telephone);
+              setSaisieAdresseEntreprise(reponseData.stage.adresse);
+              setSaisieDesriptionStage(reponseData.stage.description);
+              setSaisieRemuneration(reponseData.stage.remuneration);
+            } catch (erreur) {
+              console.log(erreur);
+            }
+          };
+          recupererStage();
+        }, [sendRequest, stageId]);
+
         function saisieNomEntrepriseHandler(event) {
             setSaisieNomEntreprise(event.target.value);
           }

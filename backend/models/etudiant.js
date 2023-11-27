@@ -14,7 +14,6 @@ const etudiantSchema = new Schema({
           datePostulation: { type: String, required:true }
         }
       ]
-    //stages: [{type:mongoose.Types.ObjectId, required:true, ref:"Stage"}]
 })
 
 module.exports = mongoose.model("Etudiant", etudiantSchema);
