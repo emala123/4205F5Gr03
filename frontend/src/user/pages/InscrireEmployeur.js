@@ -26,6 +26,48 @@ const InscrireEmployeur = () => {
   const ajouterEmployeur = async (event) => {
     event.preventDefault();
 
+
+    var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    var number = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    const adress = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s,'-]+$/;
+
+
+
+    if (saisieNomEntreprise === "") {
+      alert(
+        "Veuillez entrer le nom de l'entreprise"
+      );
+      return;
+    } else if (!saisieAdresse.match(adress)) {
+      alert("Veuillez entrer l'adresse");
+      return;
+    } else if (saisiePrenom === "") {
+      alert("Veuillez entrer le prenom");
+      return;
+    } else if (saisieNom === "") {
+        alert("Veuillez entrer le nom");
+        return;
+    } else if (!saisieTelephone.match(number)) {
+      alert("Veuillez entrer le nom");
+      return;
+      
+    } else if (!saisiePostTelephone.match(/^\d*$/)) {
+            alert("Veuillez entrer le poste du telephone ");
+      return;
+    } else if (!saisieCourriel.match(validRegex)) {
+      alert("Veuillez entrer un courriel valide ");
+      return;
+    } else if (saisieMotDePasse === "") {
+        alert("Veuillez entrer un mot de passe valide ");
+        return;
+
+        //Le tableau de stage
+   /* } else if (setSaisieStage === "") {
+        alert("Veuillez entrer un mot de passe valide ");
+        return;*/
+      
+    }
+
     try {
       const reponseData = await sendRequest(
         `http://localhost:5000/`+"employeurs/inscription",
@@ -59,40 +101,7 @@ const InscrireEmployeur = () => {
       console.log(err);
     }
 
-    if (saisieNomEntreprise === "") {
-        alert(
-          "Veuillez entrer le nom de l'entreprise"
-        );
-        return;
-      } else if (saisieAdresse === "") {
-        alert("Veuillez entrer l'adresse");
-        return;
-      } else if (saisiePrenom === "") {
-        alert("Veuillez entrer le prenom");
-        return;
-      } else if (saisieNom === "") {
-          alert("Veuillez entrer le nom");
-          return;
-      } else if (saisieTelephone ==="") {
-        alert("Veuillez entrer le nom");
-        return;
-        
-      } else if (saisiePostTelephone === "") {
-        alert("Veuillez entrer le poste du telephone ");
-        return;
-      } else if (saisieCourriel === "") {
-        alert("Veuillez entrer un courriel valide ");
-        return;
-      } else if (saisieMotDePasse === "") {
-          alert("Veuillez entrer un mot de passe valide ");
-          return;
-  
-          //Le tableau de stage
-     /* } else if (setSaisieStage === "") {
-          alert("Veuillez entrer un mot de passe valide ");
-          return;*/
-        
-      }
+    
   };
 
   function saisieNomEntrepriseHandler(event) {

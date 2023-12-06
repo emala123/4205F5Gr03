@@ -28,9 +28,10 @@ const AffichageCandidats = () => {
         console.log(erreur);
       }
     };
-    recupererStage();
-  }, [sendRequest, stageId]);
 
+    recupererStage();
+}, [sendRequest, stageId]);
+ 
   useEffect(() => {
     const recupererEtudiantsDetails = async () => {
       const details = await Promise.all(
@@ -54,8 +55,31 @@ const AffichageCandidats = () => {
     recupererEtudiantsDetails();
   }, [sendRequest, tableauEtudiant]);
 
-  console.log("étudiantsDetails:", etudiantsDetails);
 
+  const submitDecision = async (selectedValue, etudiantId) => {
+    try {
+        const response = await sendRequest(
+          `http://localhost:5000/` + `etudiants/modifierPostulationReponse/${etudiantId}/${stageId}`,
+            'PATCH',
+            JSON.stringify({ 
+              decision: selectedValue 
+            }),
+            {
+              'Content-Type': 'application/json'
+          }
+        );
+        alert("Le statut a bien été changer!");
+    } catch (error) {
+        console.error('Error sending data to backend:', error);
+    }
+  };
+  function handleDecisionSubmit(etudiantId) {
+    const decisionSelect = document.getElementById('decision');
+    const selectedValue = decisionSelect.value;
+    submitDecision(selectedValue, etudiantId);
+    console.log(selectedValue);
+}
+  
   return (
     <div className="candidats-page">
         <h2>Voici les étudiants qui ont postuler pour ce stage:</h2>
@@ -69,14 +93,25 @@ const AffichageCandidats = () => {
             <p>Adresse : {etudiant.adresse}</p>
             <br/>
             {etudiant.postulations.map((datePostul) => {
-                return datePostul.stage == stageId ? (
-                    <p>Date de postulation: {datePostul.datePostulation}</p>
-                ) : null;
-            
-            })}
+              return datePostul.stage == stageId ? (
+                <div><p>Date de postulation: {datePostul.datePostulation}</p>
+                  <label for="decision">Ajouter un statut:    </label>
+                  <select id="decision" name="decision">
+                    <option value="En attente...">En attente...</option>
+                    <option value="Accepter">Accepter</option>
+                    <option value="Refuser">Refuser</option>
+                    <option value="Convocation">Convocation</option>
+                  </select>
+                  <br />
+                  <button onClick={() => handleDecisionSubmit(etudiant.id)}>Enregistrer le statut</button>
+                  </div>
+              ) : null;
+            }
+            )}
           </li>
         ))}
       </ul>
+    
     </div>
   );
 };

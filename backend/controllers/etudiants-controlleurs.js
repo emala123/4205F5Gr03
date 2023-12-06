@@ -5,6 +5,7 @@ const Etudiant = require("../models/etudiant");
 const Stage = require("../models/stage");
 const { default: mongoose } = require("mongoose");
 const etudiant = require("../models/etudiant");
+const stage = require("../models/stage");
 
 const inscription = async (requete, reponse, next) => {
     
@@ -171,11 +172,42 @@ const recupererStagePostulerId = async(requete, reponse, next) => {
   }
 
   for(let i = 0; i < etudiant.postulations.length; i++) {
-      stages.push(etudiant.postulations[i].stage)
+      stages.push(etudiant.postulations[i])
   }
 
   reponse.json({ stages: stages});
 }
+
+const modifierPostulationReponse = async (requete, reponse, next) => {
+  const stageId = requete.params.stageId;
+  const etudiantId = requete.params.etudiantId;
+
+  const { decision } = requete.body;
+
+  try {
+      const etudiant = await Etudiant.findById(etudiantId);
+
+      if (!etudiant) {
+          return next(new HttpErreur("Étudiant non trouvé", 404));
+      }
+
+      const postulationIndex = etudiant.postulations.findIndex(postulation => postulation.stage.toString() === stageId);
+
+      if (postulationIndex === -1) {
+          return next(new HttpErreur("L'étudiant n'a pas postulé pour ce stage", 404));
+      }
+
+      // Update le statut d'une postulation
+      etudiant.postulations[postulationIndex].reponse = decision;
+
+      await etudiant.save();
+
+      reponse.status(200).json({ message: "Statut de la postulation modifié avec succès" });
+  } catch (err) {
+      return next(new HttpErreur("Erreur dans la modification du statut de la postulation", 500));
+  }
+}
+
 
 exports.inscription = inscription;
 exports.connexion = connexion;
@@ -183,3 +215,4 @@ exports.updateEtudiant = updateEtudiant;
 exports.inscrireStage = inscrireStage;
 exports.recupererEtudiant = recupererEtudiant;
 exports.recupererStagePostulerId = recupererStagePostulerId;
+exports.modifierPostulationReponse = modifierPostulationReponse;

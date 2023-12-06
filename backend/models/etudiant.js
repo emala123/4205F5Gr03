@@ -11,7 +11,8 @@ const etudiantSchema = new Schema({
     postulations: [
         {
           stage: { type: mongoose.Types.ObjectId, required:true, ref: "Stage" },
-          datePostulation: { type: String, required:true }
+          datePostulation: { type: String, required:true },
+          reponse:{type:String, required:true, default:"En attente..."}
         }
       ]
 })

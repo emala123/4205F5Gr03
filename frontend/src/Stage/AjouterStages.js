@@ -26,6 +26,40 @@ const AjouterStages = () => {
 
       const addStage = async(event) => {
         event.preventDefault();
+        var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        var number = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+        const adress = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s,'-]+$/;
+
+
+
+
+
+        if (saisieNomEntreprise === "") {
+          alert("Veuillez entrer un nom");
+          return;
+        } else if (!saisieCourriel.match(validRegex)) {
+          alert("Veuillez entrer un courriel");
+          return;
+        } else if (!saisieNum.match(number)) {
+          alert("Veuillez entrer un numero de telephone");
+          return;
+        } else if (!saisieAdresseEntreprise.match(adress)) {
+          alert("Veuillez entrer l'adresse de l'entreprise");
+          return;
+        }  else if (saisieDescriptionStage === "") {
+          alert("Veuillez faire une description du stage");
+          return;
+        } else if (saisieRemuneration === "") {
+          alert("Veuillez saisir une renumeration");
+          return;
+        }else{
+          setSaisieNomEntreprise("");
+          setSaisieCourriel("");
+          setSaisieNum("");
+          setSaisieAdresseEntreprise("");
+          setSaisieDesriptionStage("");
+          setSaisieRemuneration("");
+        }
 
         try {
             const reponseData = await sendRequest(
@@ -51,32 +85,7 @@ const AjouterStages = () => {
             console.log(erreur);
         }
 
-        if (saisieNomEntreprise === "") {
-            alert("Veuillez entrer un nom");
-            return;
-          } else if (saisieCourriel === "") {
-            alert("Veuillez entrer un courriel");
-            return;
-          } else if (saisieNum === "") {
-            alert("Veuillez entrer un numero de telephone");
-            return;
-          } else if (saisieAdresseEntreprise === "") {
-            alert("Veuillez entrer l'adresse de l'entreprise");
-            return;
-          }  else if (saisieDescriptionStage === "") {
-            alert("Veuillez faire une description du stage");
-            return;
-          } else if (saisieRemuneration === "") {
-            alert("Veuillez saisir une renumeration");
-            return;
-          }else{
-            setSaisieNomEntreprise("");
-            setSaisieCourriel("");
-            setSaisieNum("");
-            setSaisieAdresseEntreprise("");
-            setSaisieDesriptionStage("");
-            setSaisieRemuneration("");
-          }
+        
       };
 
     function saisieNomEntrepriseHandler(event) {

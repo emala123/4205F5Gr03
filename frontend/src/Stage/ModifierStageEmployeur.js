@@ -27,6 +27,36 @@ const ModifierStage = () => {
 
         const employeurStageModif = async (event) => {
             event.preventDefault();
+
+
+            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            var number = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+            const adress = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9\s,'-]+$/;
+
+
+            if (saisieNomEntreprise === "") {
+              alert(
+                "Veuillez entrer le nom de l'entreprise"
+              );
+              return;
+            } else if (!saisieCourriel.match(validRegex)) {
+              alert("Veuillez entrer l'adresse courriel");
+              return;
+            } else if (!saisieNum.match(number)) {
+              alert("Veuillez entrer le numero de telephone");
+              return;
+            } else if (!saisieAdresseEntreprise.match(adress)) {
+                alert("Veuillez entrer une adresse");
+                return;
+            } else if (saisieDescriptionStage ==="") {
+              alert("Veuillez entrer une description");
+              return;
+              
+            } else if (saisieRemuneration === "") {
+              alert("Veuillez entrer une rémunération ");
+              return;
+            }
+
             try{
                 const reponseData = await sendRequest(
                   `http://localhost:5000/`+`stages/modifierStage/${employeurId}/${stageId}`,
@@ -55,28 +85,7 @@ const ModifierStage = () => {
                 console.log(erreur);
             }
 
-            if (saisieNomEntreprise === "") {
-                alert(
-                  "Veuillez entrer le nom de l'entreprise"
-                );
-                return;
-              } else if (saisieCourriel === "") {
-                alert("Veuillez entrer l'adresse courriel");
-                return;
-              } else if (saisieNum === "") {
-                alert("Veuillez entrer le numero de telephone");
-                return;
-              } else if (saisieAdresseEntreprise === "") {
-                  alert("Veuillez entrer une adresse");
-                  return;
-              } else if (saisieDescriptionStage ==="") {
-                alert("Veuillez entrer une description");
-                return;
-                
-              } else if (saisieRemuneration === "") {
-                alert("Veuillez entrer une rémunération ");
-                return;
-              }
+            
         };
 
         useEffect(() => {
@@ -168,7 +177,7 @@ const ModifierStage = () => {
                     <br></br>
                     <label for="renumeration">Rémunération: </label>
                     <input
-                        type="text"
+                        type="number"
                         value={saisieRemuneration}
                         onChange={saisieRemunerationHandler}
                         placeholder="Rémunération"

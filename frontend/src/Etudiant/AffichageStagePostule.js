@@ -9,6 +9,7 @@ const AffichageStagePostule = () => {
 
     const [tableauStageIdPostuler, setTableauStageIdPostuler] = useState([]);
     const [tableauStage, setTableauStage] = useState([]);
+    const [selectedStage, setSelectedStage] = useState(null);
 
     const etudiantId = auth.userId;
 
@@ -26,7 +27,6 @@ const AffichageStagePostule = () => {
                     `http://localhost:5000/` + `etudiants/recupererStagePostulerId/${etudiantId}`
                 );
                 setTableauStageIdPostuler(reponseData.stages)
-                console.log("test: " + tableauStageIdPostuler)
             }catch (erreur) {
                 console.log(erreur);
             }
@@ -36,27 +36,67 @@ const AffichageStagePostule = () => {
 
     useEffect(() => {
         const recupererStage = async () => {
+            const nouveauTableauStage = [];
             for(let i = 0; i < tableauStageIdPostuler.length; i++) {
                 try{
                     const reponseData = await sendRequest(
-                        `http://localhost:5000/` + `stages/recupererStage/${tableauStageIdPostuler[i]}`
+                        `http://localhost:5000/` + `stages/recupererStage/${tableauStageIdPostuler[i].stage}`
                     );
-                    setTableauStage(prevTableauStage => {
+                    nouveauTableauStage.push({
+                        ...reponseData.stage,
+                        datePostulation: tableauStageIdPostuler[i].datePostulation,
+                        reponse: tableauStageIdPostuler[i].reponse
+                    });
+                    /*setTableauStage(prevTableauStage => {
                         const updatedTableauStage = [...prevTableauStage, reponseData.stage];
                         console.log("test voir les stages: " + updatedTableauStage);
                         return updatedTableauStage;
-                    });
+                    });*/
+
                 }catch (erreur) {
                     console.log(erreur)
                 }
             }
+            setTableauStage(nouveauTableauStage);
         };
         recupererStage();
     }, [sendRequest, tableauStageIdPostuler]);
 
+    const handleMouseEnter = (stageId) => {
+        setSelectedStage(stageId);
+    };
+
+    const handleMouseLeave = () => {
+        setSelectedStage(null);
+    };
+
         return (
             <div>
-                <p>allo</p>
+                {tableauStageIdPostuler.length === 0 ? (
+                <div>
+                    <h2>Aucun stage postulé</h2>
+                </div>
+            ): (
+                <ul className='listeStage'>
+                {tableauStage.map(stagePostuler => (
+                    <li
+                        key={stagePostuler.id}
+                        onMouseEnter={() => handleMouseEnter(stagePostuler.id)}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        {stagePostuler.nom}
+                            {selectedStage === stagePostuler.id && (
+                                <div>
+                                    Adresse: {stagePostuler.adresse}<br />
+                                    Description: {stagePostuler.description}<br />
+                                    Date de la postulation: {stagePostuler.datePostulation}<br />
+                                    Statut: {stagePostuler.reponse}
+                                </div>
+                            )}
+                    </li>
+                ))}
+                </ul>
+            )}
             </div>
         );
 };
